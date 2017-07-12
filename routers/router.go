@@ -28,7 +28,7 @@ func init() {
 		AllowHeaders:     []string{"Origin", "Authorization", "authorization", "Access-Control-Allow-Origin", "Content-Type", "X-CSRF-TOKEN"},
 		ExposeHeaders:    []string{"Content-Length", "Access-Control-Allow-Origin"},
 		AllowCredentials: true,
-		AllowOrigins:     []string{"https://127.0.0.1/:5003", "http://localhost:8081", "http://localhost:8888", "http://192.168.0.103:8080", "http://192.168.0.103:8081"},
+		AllowOrigins:     []string{"https://127.0.0.1/:5003", "http://localhost:8081", "http://localhost:8888", "http://192.168.0.103:8080", "http://192.168.0.103:8081", "http://127.0.0.1:10001"},
 	}))
 	// beego.Router("/", &controllers.MainController{})
 	ns := beego.NewNamespace("/v1",
