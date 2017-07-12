@@ -1,0 +1,55 @@
+swagger: "2.0"
+info:
+  title: beego Test API
+  description: beego has a very cool tools to autogenerate documents for your API
+  version: 1.0.0
+  termsOfService: http://beego.me/
+  contact:
+    email: astaxie@gmail.com
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+basePath: /v1
+paths:
+  /device/realtimelast:
+    get:
+      tags:
+      - device
+      description: find object by objectid
+      operationId: DeviceController.Get
+      responses:
+        "200":
+          description: '"sukses"'
+          schema:
+            $ref: '#/definitions/.Object'
+        "403":
+          description: :objectId is empty
+  /pasien/pendaftaranbaru:
+    post:
+      tags:
+      - pasien
+      description: find object by objectid
+      operationId: PasienController.Get
+      parameters:
+      - in: body
+        name: body
+        description: tes
+        required: true
+        schema:
+          $ref: '#/definitions/models.ParamChart'
+      responses:
+        "200":
+          description: '"sukses"'
+          schema:
+            $ref: '#/definitions/.Object'
+        "403":
+          description: :objectId is empty
+definitions:
+  .Object:
+    type: object
+  models.ParamChart:
+    title: ParamChart
+    type: object
+    properties:
+      jenis_chart:
+        type: string
