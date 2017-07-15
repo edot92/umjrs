@@ -1,5 +1,7 @@
 <template lang="html">
   <div id="Realtimesensor" class="content">
+    <h5>Last Updated:  {{lastupdated}}</h5>
+    <br>
         <div class="row">
           <div class="col-md-6">
             <div id="gauge1">
@@ -59,6 +61,8 @@ export default {
   data () {
     return {
       gauge1: '',
+      lastupdated: '',
+      gauge2: '',
       realtime_sensor: {
         namapasien: '',
         temperature: '',
@@ -73,6 +77,7 @@ export default {
     // document.addEventListener('DOMContentLoaded', function () {
     initGauge(this)
     // })
+    this.lastupdated = window.moment().format('hh:mm:ss DD-MM-YYYY')
   },
 
   methods: {

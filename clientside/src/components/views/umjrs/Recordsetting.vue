@@ -18,7 +18,7 @@
           <div class="form-group">
               <label class="control-label col-sm-4" for="pwd">Temperature Dan BPM:</label>
               <div class="col-sm-4">
-                <toggle-button :width="100" :color="{checked: '#42b983', unchecked: '#dd4b39'}" @change="onChangeEventHandler" :value="true" :labels="{checked: 'RECORD START', unchecked: 'RECORD STOP'}"/>
+                <toggle-button :width="100" :sync="true"  :color="{checked: '#42b983', unchecked: '#dd4b39' }" @change="onChangeChecked" :value="recordform.recordToogle" :labels="{checked: 'RECORD START', unchecked: 'RECORD STOP'}"/>
               </div>
           </div>
       <hr>
@@ -33,23 +33,101 @@
 
 <script>
 import vSelect from 'vue-select'
+var promise
 export default {
   components: {vSelect},
   data () {
     return {
       selected: null,
+      promise: null,
       options: ['foo', 'bar', 'baz'],
-      isActive: false,
+      isActiveChecked: false,
       recordform: {
         no_bpjs: '',
         nama_lengkap: '',
         temperature: '',
+        recordToogle: true,
         status: ''
       }
     }
   },
   mounted () {
-    this.getListPasien()
+    var thisVue = this
+    promise = new Promise((resolve, reject) => {
+      thisVue.axios({
+        method: 'get',
+        url: 'record/getallpasien'
+      })
+      .then(function (response) {
+        resolve(response)
+      }).catch(function (error) {
+        if (typeof error.response === 'undefined') {
+          reject('network errors')
+          return
+        }
+        swal(
+            'info',
+            error.response.data.error,
+            'error'
+          )
+        reject(error.response.data.error)
+      })// end axios
+    })
+
+    // get last state record
+    promise.then(res => {
+      window.listpasien = res.data.data
+      thisVue.options = []
+      for (var i = 0; i < window.listpasien.length; i++) {
+        thisVue.options[i] = window.listpasien[i].no_bpjs
+      }
+      return new Promise((resolve, reject) => {
+        thisVue.axios({
+          method: 'get',
+          url: 'record/getrecordactive'
+        })
+        .then(function (response) {
+          if (response.data.message.status === 'active') {
+            resolve(response)
+          } else {
+            reject('param json invalid on url record/getrecordactive')
+          }
+        }).catch(function (error) {
+          thisVue.recordform.recordToogle = false
+          thisVue.isActiveChecked = thisVue.recordform.recordToogle
+          if (typeof error.response === 'undefined') {
+            reject('network errors')
+            return
+          }
+          if (error.response.data.error === 'record not found') {
+            reject('record not found')
+            return
+          } else {
+            reject(error.response.data.error)
+          }
+        })// end axios
+      })
+    }).then(res => {
+      console.log(res)
+      const response = res
+      thisVue.no_bpjs = response.data.message.no_bpjs
+      thisVue.selected = response.data.message.no_bpjs
+      thisVue.nama_lengkap = response.data.message.nama_lengkap
+      thisVue.recordform.recordToogle = true
+      thisVue.isActiveChecked = thisVue.recordform.recordToogle
+      console.log(thisVue.recordform.recordToogle)
+      console.log(thisVue.isActiveChecked)
+    }).catch(err => {
+      console.log(err)
+      // alert(err)
+      if (err !== null) {
+        swal(
+          'info',
+          err,
+          'error'
+        )
+      }
+    })
   },
   methods: {
     simpanRecord: function (param) {
@@ -63,16 +141,19 @@ export default {
         return false
       }
       var thisVue = this
+      console.log(this.recordform.status)
+      var paramJSON = {
+        status: thisVue.recordform.status,
+        no_bpjs: thisVue.recordform.no_bpjs,
+        nama_lengkap: thisVue.recordform.nama_lengkap,
+        created_at: '',
+        update_at: ''
+      }
+      console.log(paramJSON)
       thisVue.axios({
         method: 'post',
         url: 'record/setrecordactive',
-        data: {
-          status: thisVue.recordform.status,
-          no_bpjs: thisVue.recordform.no_bpjs,
-          nama_lengkap: thisVue.recordform.nama_lengkap,
-          created_at: '',
-          update_at: ''
-        }
+        data: paramJSON
       })
       .then(function (response) {
         swal(
@@ -104,42 +185,17 @@ export default {
         }
       }
     },
-    onChangeEventHandler: function () {
-      this.isActive = !this.isActive
-      if (this.isActive === false) {
+    onChangeChecked: function () {
+      this.isActiveChecked = !this.isActiveChecked
+      if (this.isActiveChecked === true) {
         this.recordform.status = 'active'
       } else {
         this.recordform.status = ''
       }
-      console.log(this.recordform.status)
+      console.log(this.isActiveChecked)
     },
     getListPasien: function () {
-      var thisVue = this
-      thisVue.axios({
-        method: 'get',
-        url: 'record/getallpasien'
-      })
-      .then(function (response) {
-        window.listpasien = response.data.data
-        thisVue.options = []
-        for (var i = 0; i < window.listpasien.length; i++) {
-          thisVue.options[i] = window.listpasien[i].no_bpjs
-        }
-      }).catch(function (error) {
-        if (typeof error.response === 'undefined') {
-          swal(
-              'info',
-              'network errors',
-              'error'
-            )
-          return
-        }
-        swal(
-            'info',
-            error.response.data.error,
-            'error'
-          )
-      })
+
     }
   }
 }
