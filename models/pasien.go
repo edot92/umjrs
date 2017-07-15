@@ -3,6 +3,7 @@ package models
 import (
 	"errors"
 	"fmt"
+	"strings"
 	"time"
 
 	"github.com/edot92/umjrs/engine"
@@ -11,6 +12,16 @@ import (
 
 // Pendaftaranbaru ..
 func Pendaftaranbaru(param engine.BiodataPasien) error {
+	var results engine.BiodataPasien
+	err := engine.KonDB.Where("no_bpjs = ?", param.NoBpjs).First(&results).Error
+	if err != nil {
+		if strings.Contains(err.Error(), "record not found") == false {
+			return err
+		}
+	}
+	if results.NoBpjs != "" {
+		return errors.New("no bpjs:" + results.NoBpjs + " sudah terdaftar")
+	}
 	date := fmtdate.Format("YYYY-MM-DD hh:mm:ss", time.Now())
 	date = date + ".000000000+07:00"
 	// date = date + ".000"
@@ -33,4 +44,17 @@ func Pendaftaranbaru(param engine.BiodataPasien) error {
 		return errors.New(stringErr)
 	}
 	return nil
+}
+
+// Ceknobpjspendaftar ..
+func Ceknobpjspendaftar(noBpjs string) (engine.BiodataPasien, error) {
+	var results engine.BiodataPasien
+	err := engine.KonDB.Where("no_bpjs = ?", noBpjs).First(&results).Error
+	if err != nil {
+		return results, err
+	}
+	if results.NamaLengkap == "" {
+		return results, errors.New("no bpjs tidak tersedia")
+	}
+	return results, nil
 }

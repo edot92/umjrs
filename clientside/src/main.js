@@ -18,7 +18,7 @@ Vue.use(VueAxios, axios)
 import { sync } from 'vuex-router-sync'
 import routes from './routes'
 import store from './store'
-
+window.listpasien = []
 // Import Helpers for filters
 import { domain, count, prettyDate, pluralize } from './filters'
 

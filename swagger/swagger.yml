@@ -11,12 +11,58 @@ info:
     url: http://www.apache.org/licenses/LICENSE-2.0.html
 basePath: /v1
 paths:
+  /device/insert:
+    get:
+      tags:
+      - device
+      description: find object by objectid
+      operationId: DeviceController.Insert
+      parameters:
+      - in: query
+        name: temp
+        description: deksripsi2
+        required: true
+        schema:
+          $ref: '#/definitions/.null'
+      - in: query
+        name: bpm
+        description: deksripsi2
+        required: true
+        schema:
+          $ref: '#/definitions/.null'
+      responses:
+        "200":
+          description: '"sukses"'
+          schema:
+            $ref: '#/definitions/.Object'
+        "403":
+          description: :objectId is empty
   /device/realtimelast:
     get:
       tags:
       - device
       description: find object by objectid
-      operationId: DeviceController.Get
+      operationId: DeviceController.Realtimelast
+      responses:
+        "200":
+          description: '"sukses"'
+          schema:
+            $ref: '#/definitions/.Object'
+        "403":
+          description: :objectId is empty
+  /pasien/ceknobpjspendaftar:
+    get:
+      tags:
+      - pasien
+      description: find object by objectid
+      operationId: PasienController.Get
+      parameters:
+      - in: query
+        name: no_bpjs
+        description: deksripsi2
+        required: true
+        schema:
+          $ref: '#/definitions/.null'
       responses:
         "200":
           description: '"sukses"'
@@ -44,8 +90,49 @@ paths:
             $ref: '#/definitions/.Object'
         "403":
           description: :objectId is empty
+  /record/getallpasien:
+    get:
+      tags:
+      - record
+      description: find object by objectid
+      operationId: RecordController.Get
+      responses:
+        "200":
+          description: '"sukses"'
+          schema:
+            $ref: '#/definitions/.Object'
+        "403":
+          description: :objectId is empty
+  /record/getrecordactive:
+    get:
+      tags:
+      - record
+      description: find object by objectid
+      operationId: RecordController.Get
+      responses:
+        "200":
+          description: '"sukses"'
+          schema:
+            $ref: '#/definitions/.Object'
+        "403":
+          description: :objectId is empty
+  /record/setrecordactive:
+    post:
+      tags:
+      - record
+      description: find object by objectid
+      operationId: RecordController.Get
+      responses:
+        "200":
+          description: '"sukses"'
+          schema:
+            $ref: '#/definitions/.Object'
+        "403":
+          description: :objectId is empty
 definitions:
   .Object:
+    type: object
+  .null:
     type: object
   models.ParamChart:
     title: ParamChart

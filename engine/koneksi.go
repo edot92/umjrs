@@ -27,6 +27,14 @@ type BiodataPasien struct {
 	CreatedAt    string `json:"created_at"`
 	UpdateAt     string `json:"update_at"`
 }
+type RecordActive struct {
+	ID          uint64 `gorm:"primary_key"`
+	Status      string `json:"status"`
+	NoBpjs      string `json:"no_bpjs"`
+	NamaLengkap string `json:"nama_lengkap"`
+	CreatedAt   string `json:"created_at"`
+	UpdateAt    string `json:"update_at"`
+}
 
 // BukaDatabase ..
 func BukaDatabase() error {
@@ -40,6 +48,7 @@ func BukaDatabase() error {
 	// }
 	db.AutoMigrate(&DataSerialDB{})
 	db.AutoMigrate(&BiodataPasien{})
+	db.AutoMigrate(&RecordActive{})
 	KonDB = db
 	return nil
 }

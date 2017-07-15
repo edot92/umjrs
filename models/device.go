@@ -1,6 +1,11 @@
 package models
 
-import "github.com/edot92/umjrs/engine"
+import (
+	"fmt"
+	"strings"
+
+	"github.com/edot92/umjrs/engine"
+)
 
 type ParamChart struct {
 	JenisChart string `json:"jenis_chart"`
@@ -18,5 +23,32 @@ func GetRealtime() (engine.DataSerialDB, error) {
 	var res engine.DataSerialDB
 	engine.KonDB.Last(&res)
 	return res, nil
+
+}
+
+// Insert ...
+func Insert(temperature, bpm string) error {
+	var results1 engine.RecordActive
+	err := engine.KonDB.Where("status = ?", "active").First(&results1).Error
+	if err != nil {
+
+		if strings.Contains(err.Error(), " record not found") == false {
+			return err
+		}
+		fmt.Println(err)
+	}
+
+	var temp = engine.DataSerialDB{
+		NoBpjs:      results1.NoBpjs,
+		Bpm:         bpm,
+		Temperature: temperature,
+	}
+	err = engine.KonDB.Create(&temp).Error
+	if err != nil {
+		fmt.Println(err)
+		return err
+	}
+	fmt.Println("insert sukses to No BPJS:" + temp.NoBpjs)
+	return nil
 
 }

@@ -18,24 +18,28 @@ func main() {
 	beego.BConfig.WebConfig.TemplateRight = "%>"
 	beego.SetStaticPath("/", "webui")
 
-	beego.SetStaticPath("api", "swagger")
+	beego.SetStaticPath("explore", "swagger")
 	beego.SetStaticPath("static", "webui/static")
 	beego.SetStaticPath("staticpublic/static", "webui/static")
 
 	engine.BukaDatabase()
-	go func() {
-		for {
-			isOk, res, err := engine.ReadAndParse()
-			if err != nil {
-				fmt.Println("error nih", err)
+	enableAlat, _ := beego.AppConfig.Bool("enable_serial")
+	if enableAlat == true {
+		go func() {
+			for {
+				isOk, res, err := engine.ReadAndParse()
+				if err != nil {
+					fmt.Println("error nih", err)
+				}
+				time.Sleep(100)
+				_ = isOk
+				_ = res
+				_ = err
 			}
-			time.Sleep(100)
-			_ = isOk
-			_ = res
-			_ = err
-		}
 
-	}()
+		}()
+	}
+
 	go func() {
 		beego.Run(":" + beego.AppConfig.String("httpport"))
 	}()

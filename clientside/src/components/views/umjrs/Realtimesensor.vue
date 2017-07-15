@@ -12,11 +12,49 @@
               </div>
               </div>
         </div>
-
 </div>
 </template>
 
 <script>
+function initGauge (vueThis) {
+  vueThis.gauge1 = $('#gauge1').jqxGauge({
+    ranges: [{ startValue: 0, endValue: 55, style: { fill: '#4bb648', stroke: '#4bb648' }, endWidth: 5, startWidth: 1 },
+                            { startValue: 55, endValue: 110, style: { fill: '#fbd109', stroke: '#fbd109' }, endWidth: 10, startWidth: 5 },
+                            { startValue: 110, endValue: 165, style: { fill: '#ff8000', stroke: '#ff8000' }, endWidth: 13, startWidth: 10 },
+                            { startValue: 165, endValue: 220, style: { fill: '#e02629', stroke: '#e02629' }, endWidth: 16, startWidth: 13 }],
+    ticksMinor: { interval: 5, size: '5%' },
+    ticksMajor: { interval: 10, size: '9%' },
+    value: 0,
+    colorScheme: 'scheme05',
+    animationDuration: 1200,
+    caption: {
+      value: 'Temperature',
+      position: 'bottom',
+      offset: [0, 10],
+      visible: true
+    }
+  })
+  vueThis.gauge1 = $('#gauge2').jqxGauge({
+    ranges: [
+          { startValue: 0, endValue: 55, style: { fill: '#4bb648', stroke: '#4bb648' }, endWidth: 5, startWidth: 1 },
+          { startValue: 55, endValue: 110, style: { fill: '#fbd109', stroke: '#fbd109' }, endWidth: 10, startWidth: 5 },
+          { startValue: 110, endValue: 165, style: { fill: '#ff8000', stroke: '#ff8000' }, endWidth: 13, startWidth: 10 },
+          { startValue: 165, endValue: 500, style: { fill: '#e02629', stroke: '#e02629' }, endWidth: 16, startWidth: 13 }
+    ],
+    ticksMinor: { interval: 5, size: '5%' },
+    ticksMajor: { interval: 10, size: '9%' },
+    value: 0,
+    colorScheme: 'scheme02',
+    animationDuration: 1200,
+    caption: {
+      value: 'BPM',
+      position: 'bottom',
+      offset: [0, 10],
+      visible: true
+    },
+    max: 400
+  })
+}
 export default {
   data () {
     return {
@@ -32,47 +70,11 @@ export default {
   mounted () {
     // this.realtimelast()
     // setInterval(this.realtimelast, 1000)
-    document.addEventListener('DOMContentLoaded', function () {
-      alert('ready')
-      this.gauge1 = $('#gauge1').jqxGauge({
-        ranges: [{ startValue: 0, endValue: 55, style: { fill: '#4bb648', stroke: '#4bb648' }, endWidth: 5, startWidth: 1 },
-                            { startValue: 55, endValue: 110, style: { fill: '#fbd109', stroke: '#fbd109' }, endWidth: 10, startWidth: 5 },
-                            { startValue: 110, endValue: 165, style: { fill: '#ff8000', stroke: '#ff8000' }, endWidth: 13, startWidth: 10 },
-                            { startValue: 165, endValue: 220, style: { fill: '#e02629', stroke: '#e02629' }, endWidth: 16, startWidth: 13 }],
-        ticksMinor: { interval: 5, size: '5%' },
-        ticksMajor: { interval: 10, size: '9%' },
-        value: 0,
-        colorScheme: 'scheme05',
-        animationDuration: 1200,
-        caption: {
-          value: 'Temperature',
-          position: 'bottom',
-          offset: [0, 10],
-          visible: true
-        }
-      })
-      this.gauge1 = $('#gauge2').jqxGauge({
-        ranges: [
-          { startValue: 0, endValue: 55, style: { fill: '#4bb648', stroke: '#4bb648' }, endWidth: 5, startWidth: 1 },
-          { startValue: 55, endValue: 110, style: { fill: '#fbd109', stroke: '#fbd109' }, endWidth: 10, startWidth: 5 },
-          { startValue: 110, endValue: 165, style: { fill: '#ff8000', stroke: '#ff8000' }, endWidth: 13, startWidth: 10 },
-          { startValue: 165, endValue: 500, style: { fill: '#e02629', stroke: '#e02629' }, endWidth: 16, startWidth: 13 }
-        ],
-        ticksMinor: { interval: 5, size: '5%' },
-        ticksMajor: { interval: 10, size: '9%' },
-        value: 0,
-        colorScheme: 'scheme02',
-        animationDuration: 1200,
-        caption: {
-          value: 'BPM',
-          position: 'bottom',
-          offset: [0, 10],
-          visible: true
-        },
-        max: 400
-      })
-    })
+    // document.addEventListener('DOMContentLoaded', function () {
+    initGauge(this)
+    // })
   },
+
   methods: {
     realtimelast: function () {
       var thisVue = this
