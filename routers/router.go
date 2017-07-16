@@ -47,6 +47,11 @@ func init() {
 				&controllers.RecordController{},
 			),
 		),
+		beego.NSNamespace("/riwayat",
+			beego.NSInclude(
+				&controllers.RiwayatController{},
+			),
+		),
 	)
 	beego.AddNamespace(ns)
 }

@@ -23,6 +23,7 @@ func Setrecordactive(param engine.RecordActive) error {
 	if err != nil {
 		return err
 	}
+	fmt.Print("param=")
 	fmt.Println(param)
 	if param.Status != "" {
 		var temp = engine.RecordActive{

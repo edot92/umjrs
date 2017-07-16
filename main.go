@@ -18,7 +18,7 @@ func main() {
 	beego.BConfig.WebConfig.TemplateRight = "%>"
 	beego.SetStaticPath("/", "webui")
 
-	beego.SetStaticPath("explore", "swagger")
+	beego.SetStaticPath("explorer", "swagger")
 	beego.SetStaticPath("static", "webui/static")
 	beego.SetStaticPath("staticpublic/static", "webui/static")
 

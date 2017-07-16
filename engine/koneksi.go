@@ -11,7 +11,7 @@ var StartRecord = false
 
 //history
 type DataSerialDB struct {
-	ID          uint64 `gorm:"primary_key"`
+	ID          uint64 `json:"id" gorm:"primary_key"`
 	NoBpjs      string `json:"no_bpjs"`
 	Temperature string `json:"temperature"`
 	Bpm         string `json:"bpm"`
@@ -19,7 +19,7 @@ type DataSerialDB struct {
 	UpdateAt    string `json:"update_at"`
 }
 type BiodataPasien struct {
-	ID           uint64 `gorm:"primary_key"`
+	ID           uint64 `json:"id" gorm:"primary_key"`
 	NoBpjs       string `json:"no_bpjs"`
 	NamaLengkap  string `json:"nama_lengkap"`
 	JenisKelamin string `json:"jenis_kelamin"`
@@ -28,7 +28,7 @@ type BiodataPasien struct {
 	UpdateAt     string `json:"update_at"`
 }
 type RecordActive struct {
-	ID          uint64 `gorm:"primary_key"`
+	ID          uint64 `json:"id" gorm:"primary_key"`
 	Status      string `json:"status"`
 	NoBpjs      string `json:"no_bpjs"`
 	NamaLengkap string `json:"nama_lengkap"`

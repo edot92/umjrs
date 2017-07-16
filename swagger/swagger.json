@@ -15,6 +15,46 @@
     },
     "basePath": "/v1",
     "paths": {
+        "/device/getrecordactiveandbiodata": {
+            "get": {
+                "tags": [
+                    "device"
+                ],
+                "description": "find object by objectid",
+                "operationId": "DeviceController.Insert",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "temp",
+                        "description": "deksripsi2",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/.null"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "bpm",
+                        "description": "deksripsi2",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/.null"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "\"sukses\"",
+                        "schema": {
+                            "$ref": "#/definitions/.Object"
+                        }
+                    },
+                    "403": {
+                        "description": ":objectId is empty"
+                    }
+                }
+            }
+        },
         "/device/insert": {
             "get": {
                 "tags": [
@@ -62,6 +102,26 @@
                 ],
                 "description": "find object by objectid",
                 "operationId": "DeviceController.Realtimelast",
+                "responses": {
+                    "200": {
+                        "description": "\"sukses\"",
+                        "schema": {
+                            "$ref": "#/definitions/.Object"
+                        }
+                    },
+                    "403": {
+                        "description": ":objectId is empty"
+                    }
+                }
+            }
+        },
+        "/device/realtimelastactiverecord": {
+            "get": {
+                "tags": [
+                    "device"
+                ],
+                "description": "find object by objectid",
+                "operationId": "DeviceController.Realtimelastactiverecord",
                 "responses": {
                     "200": {
                         "description": "\"sukses\"",
@@ -196,6 +256,59 @@
                     }
                 }
             }
+        },
+        "/riwayat/getallpasien": {
+            "get": {
+                "tags": [
+                    "riwayat"
+                ],
+                "description": "find object by objectid",
+                "operationId": "RiwayatController.Get",
+                "responses": {
+                    "200": {
+                        "description": "\"sukses\"",
+                        "schema": {
+                            "$ref": "#/definitions/.Object"
+                        }
+                    },
+                    "403": {
+                        "description": ":objectId is empty"
+                    }
+                }
+            }
+        },
+        "/riwayat/gethistorybynobpjs": {
+            "post": {
+                "tags": [
+                    "riwayat"
+                ],
+                "description": "find object by objectid",
+                "operationId": "RiwayatController.Get",
+                "parameters": [
+                    {
+                        "in": "{object}",
+                        "name": "200",
+                        "description": "sukses",
+                        "schema": {
+                            "$ref": "#/definitions/models.ParamGethistorybynobpjs"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "\"sukses\"",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/engine.DataSerialDB"
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": ":objectId is empty"
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -205,11 +318,45 @@
         ".null": {
             "type": "object"
         },
+        "engine.DataSerialDB": {
+            "title": "DataSerialDB",
+            "type": "object",
+            "properties": {
+                "bpm": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "no_bpjs": {
+                    "type": "string"
+                },
+                "temperature": {
+                    "type": "string"
+                },
+                "update_at": {
+                    "type": "string"
+                }
+            }
+        },
         "models.ParamChart": {
             "title": "ParamChart",
             "type": "object",
             "properties": {
                 "jenis_chart": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.ParamGethistorybynobpjs": {
+            "title": "ParamGethistorybynobpjs",
+            "type": "object",
+            "properties": {
+                "no_bpjs": {
                     "type": "string"
                 }
             }

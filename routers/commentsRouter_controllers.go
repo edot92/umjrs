@@ -17,8 +17,24 @@ func init() {
 
 	beego.GlobalControllerRouter["github.com/edot92/umjrs/controllers:DeviceController"] = append(beego.GlobalControllerRouter["github.com/edot92/umjrs/controllers:DeviceController"],
 		beego.ControllerComments{
+			Method: "Realtimelastactiverecord",
+			Router: `/realtimelastactiverecord`,
+			AllowHTTPMethods: []string{"get"},
+			MethodParams: param.Make(),
+			Params: nil})
+
+	beego.GlobalControllerRouter["github.com/edot92/umjrs/controllers:DeviceController"] = append(beego.GlobalControllerRouter["github.com/edot92/umjrs/controllers:DeviceController"],
+		beego.ControllerComments{
 			Method: "Insert",
 			Router: `/insert`,
+			AllowHTTPMethods: []string{"get"},
+			MethodParams: param.Make(),
+			Params: nil})
+
+	beego.GlobalControllerRouter["github.com/edot92/umjrs/controllers:DeviceController"] = append(beego.GlobalControllerRouter["github.com/edot92/umjrs/controllers:DeviceController"],
+		beego.ControllerComments{
+			Method: "Getrecordactiveandbiodata",
+			Router: `/getrecordactiveandbiodata`,
 			AllowHTTPMethods: []string{"get"},
 			MethodParams: param.Make(),
 			Params: nil})
@@ -60,6 +76,22 @@ func init() {
 			Method: "Getrecordactive",
 			Router: `/getrecordactive`,
 			AllowHTTPMethods: []string{"get"},
+			MethodParams: param.Make(),
+			Params: nil})
+
+	beego.GlobalControllerRouter["github.com/edot92/umjrs/controllers:RiwayatController"] = append(beego.GlobalControllerRouter["github.com/edot92/umjrs/controllers:RiwayatController"],
+		beego.ControllerComments{
+			Method: "Getallpasien",
+			Router: `/getallpasien`,
+			AllowHTTPMethods: []string{"get"},
+			MethodParams: param.Make(),
+			Params: nil})
+
+	beego.GlobalControllerRouter["github.com/edot92/umjrs/controllers:RiwayatController"] = append(beego.GlobalControllerRouter["github.com/edot92/umjrs/controllers:RiwayatController"],
+		beego.ControllerComments{
+			Method: "Gethistorybynobpjs",
+			Router: `/gethistorybynobpjs`,
+			AllowHTTPMethods: []string{"post"},
 			MethodParams: param.Make(),
 			Params: nil})
 

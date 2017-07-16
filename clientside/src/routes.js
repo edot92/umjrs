@@ -1,8 +1,6 @@
 import DashView from './components/Dash.vue'
 // import LoginView from './components/Login.vue'
 import NotFoundView from './components/404.vue'
-import HistoryPages from './components/views/logger/History'
-import RealtimePages from './components/views/logger/Realtime'
 import Pendaftaranpasien from './components/views/umjrs/Pendaftaranpasien'
 import Riwayatpasien from './components/views/umjrs/Riwayatpasien'
 import Realtimesensor from './components/views/umjrs/Realtimesensor'
@@ -37,23 +35,10 @@ const routes = [
         name: 'Realtimesensor',
         meta: { description: '' }
       },
-
-      {
-        path: 'history',
-        component: HistoryPages,
-        name: 'History',
-        meta: { description: '' }
-      },
       {
         path: 'recordsetting',
         component: Recordsetting,
         name: 'Recordsetting',
-        meta: { description: '' }
-      },
-      {
-        path: 'realtime',
-        component: RealtimePages,
-        name: 'Realtime',
         meta: { description: '' }
       }
 

@@ -2,16 +2,21 @@
 <div id="riwayatpasien" class="content">
 
   <form action="" method="#" class="form-horizontal" >
-      <div class="form-group">
+    <div class="form-group">
+        <label class="control-label col-sm-4" for="pwd">No BPJS:</label>
+        <div class="col-sm-4">
+          <v-select :value.sync="param_riwayat.selected" :options="param_riwayat.no_bpjs" :onChange="selectChange"></v-select>
+        </div>
+    </div>
+      <!-- <div class="form-group">
           <label class="control-label col-sm-2" for="pwd">no_bpjs </label>
           <div class="col-sm-10">
               <input v-model="param_riwayat.no_bpjs" type="text" class="form-control" required>
           </div>
-      </div>
-      <h5>{{param_riwayat.no_bpjs }}</h5>
+      </div> -->
       <div class="form-group">
           <div class="col-sm-10 col-sm-offset-2">
-              <button @click.prevent="showHistoryByDate()" class="btn btn-primary btn-block">Tampilkan Data</button>
+              <button @click.prevent="showHistory()" class="btn btn-primary btn-block">Tampilkan Data</button>
           </div>
       </div>
   </form>
@@ -22,25 +27,96 @@
 </template>
 
 <script>
+import vSelect from 'vue-select'
 export default {
+  components: {vSelect},
   data () {
     return {
       param_riwayat: {
-        no_bpjs: ''
+        no_bpjs: ['foo', 'bar'],
+        selected: null
       },
       tabelriwayat: {
-        columns: ['id', 'name', 'age'],
+        columns: [
+          'id',
+          'bpm',
+          'no_bpjs',
+          'temperature',
+          'update_at'
+        ],
         data: [
-          {id: 1, name: 'John', age: '20'},
-          {id: 2, name: 'Jane', age: '24'},
-          {id: 3, name: 'Susan', age: '16'},
-          {id: 4, name: 'Chris', age: '55'},
-          {id: 5, name: 'Dan', age: '40'}
         ],
         options: {
 // see the options API
         }
       }
+    }
+  },
+  mounted () {
+    var thisVue = this
+    thisVue.axios({
+      method: 'get',
+      url: 'riwayat/getallpasien'
+    })
+      .then(function (response) {
+        thisVue.param_riwayat.no_bpjs = []
+        // // thisVue.tabelriwayat.data = response.data.data
+        for (var i = 0; i < response.data.data.length; i++) {
+          thisVue.param_riwayat.no_bpjs[i] = response.data.data[i].no_bpjs
+          response.data.data[i].created_at = moment(moment(response.data.data[i].created_at).toString()).format('DD-MM-YYYY HH:mm:ss')
+          response.data.data[i].update_at = moment(moment(response.data.data[i].update_at).toString()).format('DD-MM-YYYY HH:mm:ss')
+        }
+      }).catch(function (error) {
+        if (typeof error.response === 'undefined') {
+          alert('network errors')
+          return
+        }
+        swal(
+            'info',
+            error.response.data.error,
+            'error'
+          )
+      })// end axios
+  },
+  methods: {
+    selectChange: function (param) {
+      this.param_riwayat.selected = param
+    },
+    showHistory: function () {
+      alert(this.param_riwayat.selected)
+      if (this.param_riwayat.selected === null || this.param_riwayat.selected === '') {
+        swal(
+            'info',
+            'harap memilih no bpjs',
+            'error'
+          )
+        return
+      }
+      var thisVue = this
+      thisVue.axios({
+        method: 'post',
+        url: 'riwayat/gethistorybynobpjs',
+        data: {
+          no_bpjs: thisVue.param_riwayat.selected
+        }
+      })
+        .then(function (response) {
+          for (var i = 0; i < response.data.data.length; i++) {
+            response.data.data[i].created_at = moment(moment(response.data.data[i].created_at).toString()).format('DD-MM-YYYY HH:mm:ss')
+            response.data.data[i].update_at = moment(moment(response.data.data[i].update_at).toString()).format('DD-MM-YYYY HH:mm:ss')
+          }
+          thisVue.tabelriwayat.data = response.data.data
+        }).catch(function (error) {
+          if (typeof error.response === 'undefined') {
+            alert('network errors')
+            return
+          }
+          swal(
+              'info',
+              error.response.data.error,
+              'error'
+            )
+        })// end axios
     }
   }
 }
