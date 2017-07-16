@@ -7,8 +7,8 @@ Vue.use(ToggleButton)
 
 import axios from 'axios'
 import VueAxios from 'vue-axios'
-// axios.defaults.baseURL = '/v1'
-axios.defaults.baseURL = 'http://localhost:9000/v1'
+axios.defaults.baseURL = '/v1'
+// axios.defaults.baseURL = 'http://localhost:9000/v1'
 // axios.defaults.headers.common['Authorization'] = AUTH_TOKEN
 
 // axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
